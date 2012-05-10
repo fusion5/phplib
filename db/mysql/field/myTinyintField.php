@@ -1,0 +1,5 @@
+<?
+class myTinyintField extends myIntField 
+{
+}
+?>

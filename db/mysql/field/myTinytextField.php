@@ -1,0 +1,5 @@
+<?
+class myTinytextField extends myTextField
+{
+}
+?>

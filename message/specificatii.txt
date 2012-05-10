@@ -1,0 +1,43 @@
+interfata imessage are functiile 
+getContent():string
+getHeaders():array
+
+=============
+Clasa message implementeaza
+
+Folosita pentru a stoca informatii despre un singur mesaj
+$headers
+- From
+- To
+- MIME-Version
+- Content-type
+- Subject
+- Date
+
+Metoda getContent() returneaza continutul mesajului
+Metoda getHeaders() returneaza headerele ca array
+
+Metode pentru setarea headerelor (facem si analiza sintactica, ca sa prevenim atacurile prin injectie). Aruncam errors daca e cazul.
+
+La constructia unui mesaj, acesta se adauga automat in lista statica cu mesaje pentru trimis a clasei smtp
+
+===================
+Clasa multimessage
+
+Folosita pentru a trimite un singur mesaj la un numar de adrese.
+Are o instanta de message care indica continutul si headerele
+Are o lista de utilizatori (array) unde vor fi trimise mesajele.
+
+===================
+Clasa smtp
+
+static $messages: array cu instante de imessage de trimis
+static $multimessages: array cu instantele de multimessage de trimis.
+
+In destructor (i.e. dupa incarcarea restului paginii)
+Se conecteaza la serverul de smtp, se autentifica cu anumite date, 
+apoi incepe trimiterea tuturor mesajelor din lista, dupa care se
+deconecteaza.
+
+sendMessage() adauga un mesaj in $messages (va fi trimis mai tarziu)
+sendMultiMessage() adauga un mesaj catre mai multi utilizatori (instanta de multimessage)

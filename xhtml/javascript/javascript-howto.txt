@@ -1,0 +1,47 @@
+Clasa javascript permite instantierea claselor Javascript din jslib atunci cand se creaza o instanta de xmltag.
+Toate clasele care genereaza taguri xhtml extind xmltag.
+
+Atunci cand un tag este initializat cu parametrul 'class' => 'popup' de exemplu, dupa 
+incheierea tag-ului (adica la destructorul obiectului xmltag), se va verifica daca exista
+o intrare in classMapping pentru clasa popup. 
+
+Daca exista, atunci se face o noua verificare:
+
+ - Exista o clasa jsPopup.php care extinde jshelper? Daca da, se creaza o noua instanta a ei. 
+   In principiu clasele jshelper fac output la un script care se ocupa de instantierea obiectului
+	 javascript. Aceasta metoda permite crearea instantelor de clase JavaScript care nu sunt croite
+	 pentru a fi instantiate cu metoda alternativa descrisa in sectiunea urmatoare.
+ - Daca nu a fost gasit helperul jsPopup.php, se foloseste o metoda generica care creaza instanta:
+
+	 $script = new script(array('type' => 'text/javascript'));
+	 print 'new '. $objectName . '("' . $attributes['id'] . '", ' . $json->encode($attributes) . ');';
+	 unset ($script);
+
+	 Primul parametru pasat clasei instantiate este id-ul, iar al doilea este un array cu toate atributele 
+	 care au fost folosite la instantierea campului xmltag
+
+Intrebari frecvente:
+
+	- "Cum adaug o clasa noua din jslib?"
+
+		Rezolvare: in clasa javascript (xhtml/javascript.php) exista o proprietate classMapping.
+		Pentru adaugarea unei noi clase, pur si simplu scrieti o intrare in classMapping. Cheia intrarii
+		trebuie sa fie numele clasei (cel care apare la class="class_name") si valoarea trebuie sa fie
+		calea relativa catre fisierul javascript din JSLIB_PATH. Numele clasei Javascript trebuie sa coincida
+		cu numele fisierului js. De exemplu daca numele fisierului este Class_Name.js, numele clasei instantiate
+		va fi Class_Name. Totusi, daca numele clasei trebuie sa fie diferit de cel al fisierului, poate fi 
+		folosit un jshelper jsClass_Name.php.
+
+  - "Am pus class='popup' dar componenta nu se instantiaza. In plus exista o eroare javascript!"
+
+	  Rezolvare: asigurati-va ca fisierele necesare sunt incluse in <head>. Acest lucru se poate face 
+	  in doua feluri:
+	  - Global, in array-ul global $globalIncludeJs. Clasele incluse in acest array vor fi incluse in fiecare
+	  pagina. Exemplu: $globalIncludeJs = array('popup');
+	  In array-ul global trebuie sa existe cat mai putine clase, pentru 
+	  a evita timpii de incarcare mari ai paginilor.
+	  - Local, specific unui document: public $includejs = array('popup', 'fckeditor');
+
+		De asemenea, asigurati-va ca fisierul clasei definit in classMapping exista in jslib. In cazul in care unul sau
+		mai multe fisiere incluse in documentul curent nu exista in JSLIB, nici un alt fisier nu va fi inclus in head-ul
+		documentului curent, si va apare un comentariu de eroare '<!-- Could not include javascript tags from ' . JSLIB . '-->';

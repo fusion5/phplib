@@ -1,0 +1,5 @@
+<?
+class mySmallintField extends myIntField 
+{
+}
+?>

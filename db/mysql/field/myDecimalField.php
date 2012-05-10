@@ -1,0 +1,5 @@
+<?
+class myDecimalField extends myFloatField
+{
+}
+?>

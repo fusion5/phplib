@@ -1,0 +1,5 @@
+<?
+class myDoubleField extends myFloatField
+{
+}
+?>

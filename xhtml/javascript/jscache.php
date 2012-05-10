@@ -1,0 +1,5 @@
+<?
+class jscache extends controller
+{
+}
+?>

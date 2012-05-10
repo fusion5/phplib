@@ -1,0 +1,5 @@
+<?
+class myLongtextField extends myTextField
+{
+}
+?>
